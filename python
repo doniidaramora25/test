@@ -1,0 +1,143 @@
+import turtle
+import math
+
+# 1. Pengaturan kanvas
+kanvas = turtle.Screen()
+kanvas.setup(1000, 750)
+kanvas.title("Latihan 06 - Simbol Teknik")
+kanvas.bgcolor("#0F172A")
+
+# Objek 1: Menggambar roda gigi
+t_gambar = turtle.Turtle()
+t_gambar.speed(0)
+t_gambar.hideturtle()
+
+# Objek 2: Menampilkan identitas
+t_teks = turtle.Turtle()
+t_teks.speed(0)
+t_teks.penup()
+t_teks.hideturtle()
+
+
+# Fungsi menggambar lingkaran
+def lingkaran(radius, warna_garis, warna_isi):
+    t_gambar.penup()
+    t_gambar.goto(0, -radius)
+    t_gambar.setheading(0)
+    t_gambar.color(warna_garis, warna_isi)
+    t_gambar.pensize(3)
+    t_gambar.pendown()
+    t_gambar.begin_fill()
+    t_gambar.circle(radius)
+    t_gambar.end_fill()
+    t_gambar.penup()
+
+
+# 2. Membuat bentuk roda gigi
+jumlah_gigi = 12
+radius_dasar = 145
+radius_puncak = 180
+
+titik = []
+
+for i in range(jumlah_gigi):
+    sudut_pusat = i * 360 / jumlah_gigi
+
+    pola = [
+        (-0.50, radius_dasar),
+        (-0.32, radius_dasar),
+        (-0.22, radius_puncak),
+        (0.22, radius_puncak),
+        (0.32, radius_dasar),
+        (0.50, radius_dasar)
+    ]
+
+    for offset, radius in pola:
+        sudut = math.radians(
+            sudut_pusat + offset * 360 / jumlah_gigi
+        )
+
+        x = radius * math.cos(sudut)
+        y = radius * math.sin(sudut)
+
+        titik.append((x, y))
+
+
+# Menggambar badan roda gigi
+t_gambar.penup()
+t_gambar.goto(titik[0])
+t_gambar.color("#CBD5E1", "#64748B")
+t_gambar.pensize(4)
+t_gambar.pendown()
+t_gambar.begin_fill()
+
+for posisi in titik[1:]:
+    t_gambar.goto(posisi)
+
+t_gambar.goto(titik[0])
+t_gambar.end_fill()
+t_gambar.penup()
+
+
+# 3. Lingkaran bagian dalam
+lingkaran(132, "#E2E8F0", "#334155")
+lingkaran(112, "#94A3B8", "#1E293B")
+
+
+# 4. Menggambar 8 spoke / ruji
+jumlah_ruji = 8
+
+for i in range(jumlah_ruji):
+    sudut = math.radians(i * 360 / jumlah_ruji)
+
+    x1 = 34 * math.cos(sudut)
+    y1 = 34 * math.sin(sudut)
+
+    x2 = 108 * math.cos(sudut)
+    y2 = 108 * math.sin(sudut)
+
+    t_gambar.penup()
+    t_gambar.goto(x1, y1)
+    t_gambar.pensize(13)
+    t_gambar.color("#CBD5E1")
+    t_gambar.pendown()
+    t_gambar.goto(x2, y2)
+    t_gambar.penup()
+
+
+# 5. Poros tengah berbentuk lingkaran pejal
+lingkaran(38, "#F8FAFC", "#0EA5E9")
+
+# Lubang tengah
+lingkaran(13, "#BAE6FD", "#0F172A")
+
+
+# 6. Judul simbol
+t_teks.goto(0, -235)
+t_teks.color("#FFFFFF")
+t_teks.write(
+    "RODA GIGI MESIN",
+    align="center",
+    font=("Arial", 17, "bold")
+)
+
+t_teks.goto(0, -262)
+t_teks.color("#38BDF8")
+t_teks.write(
+    "12 GIGI | 8 RUJI | POROS TENGAH",
+    align="center",
+    font=("Arial", 10, "normal")
+)
+
+
+# 7. Identitas praktikan
+t_teks.goto(-470, -335)
+t_teks.color("#38BDF8")
+t_teks.write(
+    "Nama: Doni Daramora Sipayung | NIM: 2411079",
+    font=("Arial", 10, "bold")
+)
+
+
+# 8. Menutup program ketika kanvas diklik
+kanvas.exitonclick()
